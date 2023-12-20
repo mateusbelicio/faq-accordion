@@ -1,8 +1,4 @@
-﻿@layer base;
-@layer components;
-@layer utilities;
-
-@layer base {
+﻿@layer base {
   :root {
     --white: hsl(0, 0%, 100%);
     --light-pink: hsl(274, 100%, 97%);
@@ -62,17 +58,30 @@
 
 @layer components {
   .accordion {
-    height: 100%;
+    min-height: 100%;
     padding-block: 8.9rem;
     padding-inline: 1.5rem;
     min-width: 18rem;
+    position: relative;
+  }
+
+  .accordion::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    height: 14.5rem;
+    background-image: url('../images/background-pattern-desktop.svg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    z-index: -50;
   }
 
   .accordion__wrapper {
     background-color: var(--white);
     border-radius: 0.5rem;
     margin-inline: auto;
-    max-width: 35rem;
+    max-width: 37.5rem;
     padding: 1.5rem;
     width: 100%;
     user-select: none;
@@ -138,6 +147,7 @@
     content: url('../images/icon-plus.svg');
     display: flex;
     align-items: center;
+    height: 1.875rem;
   }
 
   .accordion__content {
@@ -161,6 +171,14 @@
 }
 
 @media (min-width: 40em) {
+  .accordion {
+    padding-block: 10.5rem;
+  }
+
+  .accordion::before {
+    height: 20rem;
+  }
+
   .accordion__wrapper {
     padding: 2.5rem;
   }
