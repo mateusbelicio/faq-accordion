@@ -1,0 +1,235 @@
+﻿@layer base {
+  :root {
+    --white: hsl(0, 0%, 100%);
+    --light-pink: hsl(274, 100%, 97%);
+    --pink: hsl(281, 83%, 54%);
+    --pale-purple: hsl(292, 16%, 49%);
+    --dark-purple: hsl(292, 42%, 14%);
+  }
+
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    height: 100%;
+  }
+
+  body {
+    font-family: 'Work Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    min-height: 100%;
+    height: 100%;
+    color: var(--pale-purple);
+    background-color: var(--light-pink);
+  }
+
+  main {
+    height: 100%;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  button {
+    background: none;
+    border: none;
+    font: inherit;
+  }
+}
+
+@layer utilities {
+  .flex {
+    display: flex;
+  }
+
+  .flex-col {
+    flex-direction: column;
+  }
+
+  .items-center {
+    align-items: center;
+  }
+
+  .justify-center {
+    justify-content: center;
+  }
+}
+
+@layer components {
+  .accordion {
+    min-height: 100%;
+    padding-block: 8.9rem;
+    padding-inline: 1.5rem;
+    min-width: 18rem;
+    position: relative;
+  }
+
+  .accordion::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    height: 14.5rem;
+    background-image: url('../assets/images/background-pattern.svg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    z-index: -50;
+  }
+
+  .accordion__wrapper {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    margin-inline: auto;
+    max-width: 37.5rem;
+    padding: 1.5rem;
+    width: 100%;
+    user-select: none;
+    box-shadow: 0 2rem 3.5rem 0 hsl(281 100% 23% / 0.1);
+  }
+
+  .accordion__title {
+    color: var(--dark-purple);
+    font-size: 2rem;
+    font-weight: 700;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    line-height: 1.1875;
+  }
+
+  .accordion__title::before {
+    content: '';
+    background-image: url('../assets/images/icon-star.svg');
+    background-size: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .accordion__list > details {
+    gap: 1.5rem;
+  }
+
+  .accordion__item:not(:first-child) {
+    border-top: 1px solid var(--light-pink);
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .accordion__trigger {
+    align-items: center;
+    color: var(--dark-purple);
+    cursor: pointer;
+    display: flex;
+    font-weight: 600;
+    gap: 1.5rem;
+    justify-content: space-between;
+    line-height: 1.1722;
+    list-style: none;
+    outline: none;
+    transition: color 0.2s;
+    width: 100%;
+  }
+
+  .accordion__trigger:hover {
+    color: var(--pink);
+  }
+
+  .accordion__trigger:focus-visible {
+    color: var(--pink);
+    outline: 2px dashed var(--pink);
+    outline-offset: 1rem;
+  }
+
+  .accordion__trigger::after {
+    content: url('../assets/images/icon-plus.svg');
+    display: flex;
+    align-items: center;
+    height: 1.875rem;
+  }
+
+  .accordion__content {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-top: 1.5rem;
+    overflow-y: clip;
+  }
+
+  .accordion__item > [data-state='open'] > .accordion__trigger::after {
+    content: url('../assets/images/icon-minus.svg');
+  }
+
+  .accordion__item > [data-state='open'] > .accordion__content {
+    /* animation: open-accordion 0.6s ease-out; */
+  }
+
+  .accordion__item > :not([data-state='open']) > .accordion__content {
+    display: none;
+    /* animation: close-accordion 0.6s ease-in; */
+  }
+}
+
+@media (min-width: 40em) {
+  .accordion {
+    padding-block: 10.5rem;
+  }
+
+  .accordion::before {
+    height: 20rem;
+  }
+
+  .accordion__wrapper {
+    padding: 2.5rem;
+  }
+
+  .accordion__trigger {
+    font-size: 1.125rem;
+  }
+
+  .accordion__content {
+    font-size: 1rem;
+  }
+
+  .accordion__item:not(:first-child) {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .accordion__title {
+    line-height: 1.1785;
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .accordion__title::before {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+}
+
+@keyframes close-accordion {
+  0% {
+    height: fit-content;
+  }
+  100% {
+    height: 0;
+  }
+}
+
+@keyframes open-accordion {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: fit-content;
+  }
+}
