@@ -1,5 +1,12 @@
 /**
 |--------------------------------------------------
+| Constants
+|--------------------------------------------------
+*/
+const ANIMATION_DURATION = 300; // miliseconds
+
+/**
+|--------------------------------------------------
 | Selecting DOM Elements
 |--------------------------------------------------
 */
@@ -52,6 +59,11 @@ function closeAllAccordions() {
     accordion.panel.dataset.state = 'closed';
     accordion.panel.setAttribute('aria-hidden', 'true');
     accordion.trigger.setAttribute('aria-expanded', 'false');
+
+    setTimeout(() => {
+      if (accordion.container.dataset.state === 'closed')
+        accordion.panel.style.setProperty('display', 'none');
+    }, ANIMATION_DURATION);
   });
 }
 
@@ -63,12 +75,13 @@ function openAccordion(accordion) {
   accordion.container.dataset.state = 'open';
   accordion.panel.dataset.state = 'open';
   accordion.trigger.setAttribute('aria-expanded', 'true');
+  accordion.panel.style.removeProperty('display');
 }
 
-const CHARACTER_LENGTH =
-  Number.parseInt(getComputedStyle(accordions[0].panel).fontSize.replace('px', '')) / 2; // 8 px
-
 function defineHeightProperty() {
+  const CHARACTER_LENGTH =
+    Number.parseInt(getComputedStyle(accordions[0].panel).fontSize.replace('px', '')) / 2;
+
   accordions.forEach((accordion) => {
     const panelWords = accordion.panel.textContent.trim().split(' ');
     const panelWidth = accordion.item.getBoundingClientRect().width;
