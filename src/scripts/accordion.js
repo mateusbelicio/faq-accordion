@@ -1,34 +1,98 @@
+/**
+|--------------------------------------------------
+| Selecting DOM Elements
+|--------------------------------------------------
+*/
+
 const accordionList = document.querySelector('.accordion__list');
-const accordions = document.querySelectorAll('.accordion__item > div');
+const accordionItems = [...document.querySelectorAll('.accordion__item')];
+
+const accordions = accordionItems.map((item) => ({
+  item,
+  container: item.querySelector('.accordion__container'),
+  trigger: item.querySelector('.accordion__trigger'),
+  panel: item.querySelector('.accordion__panel'),
+}));
+
+/**
+|--------------------------------------------------
+| Event handlers
+|--------------------------------------------------
+*/
 
 accordionList.addEventListener('click', (ev) => {
   const accordionTrigger = ev.target.closest('.accordion__trigger');
   if (!accordionTrigger) return;
 
-  if (accordionTrigger.ariaExpanded === 'true') {
+  const accordion = accordions.find((item) => item.trigger === accordionTrigger);
+  if (!accordion) return;
+
+  if (accordion.trigger.ariaExpanded === 'true') {
     closeAllAccordions();
   } else {
     closeAllAccordions();
-    openAccordion(accordionTrigger);
+    openAccordion(accordion);
   }
 });
 
+window.addEventListener('resize', defineHeightProperty);
+
+/**
+|--------------------------------------------------
+| Functions
+|--------------------------------------------------
+*/
+
+/**
+ * Close all accordions
+ */
 function closeAllAccordions() {
-  accordions.forEach((item) => {
-    item.dataset.state = 'closed';
-    item.querySelector('h2').dataset.state = 'closed';
-    item.querySelector('.accordion__trigger').dataset.state = 'closed';
-    item.querySelector('.accordion__trigger').setAttribute('aria-expanded', 'false');
-    item.querySelector('.accordion__content').dataset.state = 'closed';
+  accordions.forEach((accordion) => {
+    accordion.container.dataset.state = 'closed';
+    accordion.panel.dataset.state = 'closed';
+    accordion.panel.setAttribute('aria-hidden', 'true');
+    accordion.trigger.setAttribute('aria-expanded', 'false');
   });
 }
 
-function openAccordion(accordionTrigger) {
-  accordionTrigger.parentElement.dataset.state = 'open';
-  accordionTrigger.closest('.accordion__item > div').dataset.state = 'open';
-  accordionTrigger.dataset.state = 'open';
-  accordionTrigger.closest('.accordion__item').querySelector('.accordion__content').dataset.state =
-    'open';
-
-  accordionTrigger.setAttribute('aria-expanded', 'true');
+/**
+ * Opens the selected accordion and sets properties to make it accessible
+ * @param {typeof accordions[0]} accordion
+ */
+function openAccordion(accordion) {
+  accordion.container.dataset.state = 'open';
+  accordion.panel.dataset.state = 'open';
+  accordion.trigger.setAttribute('aria-expanded', 'true');
 }
+
+const CHARACTER_LENGTH =
+  Number.parseInt(getComputedStyle(accordions[0].panel).fontSize.replace('px', '')) / 2; // 8 px
+
+function defineHeightProperty() {
+  accordions.forEach((accordion) => {
+    const panelWords = accordion.panel.textContent.trim().split(' ');
+    const panelWidth = accordion.item.getBoundingClientRect().width;
+
+    let panelLines = 1;
+    let count = 0;
+    const lines = [[]];
+    panelWords.forEach((word) => {
+      count += word.length + 1;
+
+      if (count >= panelWidth / CHARACTER_LENGTH) {
+        count = 0;
+        panelLines += 1;
+        lines.push([word]);
+      } else {
+        lines[panelLines - 1].push(word);
+      }
+    }, 0);
+
+    const lineHeight = Number.parseInt(
+      getComputedStyle(accordion.panel).lineHeight.replace('px', '')
+    );
+    accordion.panel.style.setProperty('--panel-height', `${lineHeight * panelLines}px`);
+  });
+}
+
+defineHeightProperty();

@@ -41,6 +41,7 @@
     background: none;
     border: none;
     font: inherit;
+    cursor: pointer;
   }
 }
 
@@ -127,14 +128,14 @@
 
   .accordion__trigger {
     align-items: center;
+    text-align: left;
     color: var(--dark-purple);
-    cursor: pointer;
     display: flex;
     font-weight: 600;
+    font-size: 1rem;
     gap: 1.5rem;
     justify-content: space-between;
     line-height: 1.1722;
-    list-style: none;
     outline: none;
     transition: color 0.2s;
     width: 100%;
@@ -157,24 +158,22 @@
     height: 1.875rem;
   }
 
-  .accordion__content {
+  .accordion__panel {
     font-size: 0.875rem;
     line-height: 1.5;
-    margin-top: 1.5rem;
-    overflow-y: clip;
+    overflow: hidden;
   }
 
-  .accordion__item > [data-state='open'] > .accordion__trigger::after {
+  .accordion__container[data-state='open'] > .accordion__trigger::after {
     content: url('../assets/images/icon-minus.svg');
   }
 
-  .accordion__item > [data-state='open'] > .accordion__content {
-    /* animation: open-accordion 0.6s ease-out; */
+  .accordion__container[data-state='open'] > .accordion__panel {
+    animation: open-accordion 0.3s ease-out forwards;
   }
 
-  .accordion__item > :not([data-state='open']) > .accordion__content {
-    display: none;
-    /* animation: close-accordion 0.6s ease-in; */
+  .accordion__container[data-state='closed'] > .accordion__panel {
+    animation: close-accordion 0.3s ease-out forwards;
   }
 }
 
@@ -195,7 +194,7 @@
     font-size: 1.125rem;
   }
 
-  .accordion__content {
+  .accordion__panel {
     font-size: 1rem;
   }
 
@@ -216,20 +215,24 @@
   }
 }
 
-@keyframes close-accordion {
-  0% {
-    height: fit-content;
-  }
-  100% {
-    height: 0;
-  }
-}
-
 @keyframes open-accordion {
   0% {
     height: 0;
+    margin-top: 0;
   }
   100% {
-    height: fit-content;
+    height: var(--panel-height);
+    margin-top: 1.5rem;
+  }
+}
+
+@keyframes close-accordion {
+  0% {
+    height: var(--panel-height);
+    margin-top: 1.5rem;
+  }
+  100% {
+    height: 0;
+    margin-top: 0;
   }
 }
