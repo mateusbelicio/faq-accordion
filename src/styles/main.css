@@ -133,7 +133,7 @@
     display: flex;
     font-weight: 600;
     font-size: 1rem;
-    gap: 1.5rem;
+    gap: 1.25rem;
     justify-content: space-between;
     line-height: 1.1722;
     outline: none;
@@ -167,7 +167,7 @@
     animation: var(--duration) ease-out forwards;
   }
 
-  .accordion__container[data-state='open'] > .accordion__trigger::after {
+  .accordion__container[data-state='open'] .accordion__trigger::after {
     content: url('../assets/images/icon-minus.svg');
   }
 
@@ -191,6 +191,7 @@
 
   .accordion__wrapper {
     padding: 2.5rem;
+    border-radius: 1rem;
   }
 
   .accordion__trigger {
