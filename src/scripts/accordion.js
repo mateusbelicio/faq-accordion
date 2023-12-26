@@ -1,5 +1,3 @@
-import { defineAccordionPanelEstimatedHeight } from './utils.js';
-
 const ANIMATION_DURATION = 300; // miliseconds
 
 /**
@@ -40,7 +38,6 @@ accordionList.addEventListener('click', (ev) => {
 });
 
 window.addEventListener('resize', defineAccordionPanelHeightProperty);
-defineAccordionPanelHeightProperty();
 
 /**
 |--------------------------------------------------
@@ -57,15 +54,10 @@ function closeAllAccordions() {
     accordion.panel.dataset.state = 'closed';
     accordion.panel.setAttribute('aria-hidden', 'true');
     accordion.trigger.setAttribute('aria-expanded', 'false');
-
-    setTimeout(() => {
-      if (accordion.container.dataset.state === 'closed')
-        accordion.panel.style.setProperty('display', 'none');
-    }, ANIMATION_DURATION);
   });
 }
 
-export const [ACCORDION_OBJECT] = accordions;
+const [ACCORDION_OBJECT] = accordions;
 
 /**
  * Opens the selected accordion and sets properties to make it accessible
@@ -74,8 +66,8 @@ export const [ACCORDION_OBJECT] = accordions;
 function openAccordion(accordion) {
   accordion.container.dataset.state = 'open';
   accordion.panel.dataset.state = 'open';
+  accordion.panel.setAttribute('aria-hidden', 'false');
   accordion.trigger.setAttribute('aria-expanded', 'true');
-  accordion.panel.style.removeProperty('display');
 }
 
 /**
@@ -84,6 +76,10 @@ function openAccordion(accordion) {
  */
 function defineAccordionPanelHeightProperty() {
   accordions.forEach((accordion) => {
-    defineAccordionPanelEstimatedHeight(accordion);
+    const panelHeight = accordion.panel.querySelector('p').getBoundingClientRect().height;
+    accordion.panel.style.setProperty('--panel-height', `${panelHeight}px`);
   });
 }
+
+// Initializing
+setTimeout(() => defineAccordionPanelHeightProperty(), ANIMATION_DURATION);

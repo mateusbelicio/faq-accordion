@@ -164,7 +164,8 @@
     font-size: 0.875rem;
     line-height: 1.5;
     overflow: hidden;
-    animation: var(--duration) ease-out forwards;
+    transition: height var(--duration) ease-out, margin-top var(--duration) ease-out,
+      visibility var(--duration) ease-out;
   }
 
   .accordion__container[data-state='open'] .accordion__trigger::after {
@@ -172,11 +173,15 @@
   }
 
   .accordion__container[data-state='open'] > .accordion__panel {
-    animation-name: open-accordion;
+    height: var(--panel-height);
+    margin-top: 1.5rem;
+    visibility: visible;
   }
 
   .accordion__container[data-state='closed'] > .accordion__panel {
-    animation-name: close-accordion;
+    height: 0;
+    margin-top: 0;
+    visibility: collapse;
   }
 }
 
@@ -216,27 +221,5 @@
   .accordion__title::before {
     height: 2.5rem;
     width: 2.5rem;
-  }
-}
-
-@keyframes open-accordion {
-  0% {
-    height: 0;
-    margin-top: 0;
-  }
-  100% {
-    height: var(--panel-height);
-    margin-top: 1.5rem;
-  }
-}
-
-@keyframes close-accordion {
-  0% {
-    height: var(--panel-height);
-    margin-top: 1.5rem;
-  }
-  100% {
-    height: 0;
-    margin-top: 0;
   }
 }
