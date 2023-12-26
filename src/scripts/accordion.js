@@ -1,8 +1,5 @@
-/**
-|--------------------------------------------------
-| Constants
-|--------------------------------------------------
-*/
+import { defineAccordionPanelEstimatedHeight } from './utils.js';
+
 const ANIMATION_DURATION = 300; // miliseconds
 
 /**
@@ -42,7 +39,8 @@ accordionList.addEventListener('click', (ev) => {
   }
 });
 
-window.addEventListener('resize', defineHeightProperty);
+window.addEventListener('resize', defineAccordionPanelHeightProperty);
+defineAccordionPanelHeightProperty();
 
 /**
 |--------------------------------------------------
@@ -67,9 +65,11 @@ function closeAllAccordions() {
   });
 }
 
+export const [ACCORDION_OBJECT] = accordions;
+
 /**
  * Opens the selected accordion and sets properties to make it accessible
- * @param {typeof accordions[0]} accordion
+ * @param {ACCORDION_OBJECT} accordion
  */
 function openAccordion(accordion) {
   accordion.container.dataset.state = 'open';
@@ -78,34 +78,12 @@ function openAccordion(accordion) {
   accordion.panel.style.removeProperty('display');
 }
 
-function defineHeightProperty() {
-  const CHARACTER_LENGTH =
-    Number.parseInt(getComputedStyle(accordions[0].panel).fontSize.replace('px', '')) / 2;
-
+/**
+ * Defines the height of each accordion panel and saves the value in a CSS property to be used in
+ * animations
+ */
+function defineAccordionPanelHeightProperty() {
   accordions.forEach((accordion) => {
-    const panelWords = accordion.panel.textContent.trim().split(' ');
-    const panelWidth = accordion.item.getBoundingClientRect().width;
-
-    let panelLines = 1;
-    let count = 0;
-    const lines = [[]];
-    panelWords.forEach((word) => {
-      count += word.length + 1;
-
-      if (count >= panelWidth / CHARACTER_LENGTH) {
-        count = 0;
-        panelLines += 1;
-        lines.push([word]);
-      } else {
-        lines[panelLines - 1].push(word);
-      }
-    }, 0);
-
-    const lineHeight = Number.parseInt(
-      getComputedStyle(accordion.panel).lineHeight.replace('px', '')
-    );
-    accordion.panel.style.setProperty('--panel-height', `${lineHeight * panelLines}px`);
+    defineAccordionPanelEstimatedHeight(accordion);
   });
 }
-
-defineHeightProperty();
