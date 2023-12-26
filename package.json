@@ -1,0 +1,24 @@
+{
+  "name": "faq-accordion",
+  "version": "1.0.0",
+  "description": "This is a solution to the FAQ accordion challenge on Frontend Mentor",
+  "main": "index.html",
+  "scripts": {
+    "minify-css": "postcss src/styles/main.css > src/styles/output.min.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mateusbelicio/faq-accordion.git"
+  },
+  "author": "Mateus Belício",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mateusbelicio/faq-accordion/issues"
+  },
+  "homepage": "https://github.com/mateusbelicio/faq-accordion#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.2",
+    "postcss-cli": "^11.0.0"
+  }
+}
